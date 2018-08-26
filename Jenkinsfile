@@ -1,5 +1,5 @@
 
-node('new43') {
+node('sai') {
 // Delete the workspace
 //deleteDir()
      def app
@@ -12,13 +12,13 @@ try {
      stage('Maven Build') {
       docker.image('maven:3.5-jdk-8-alpine').inside {
         sh "mvn clean package -Dbuild.number=${BUILD_NUMBER}"
-        sh "/bin/mv -f $WORKSPACE/target/*.war $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war"
-        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war $WORKSPACE/vsvyadav.war"
+        sh "/bin/mv -f $WORKSPACE/target/*.war $WORKSPACE/Build-${env.BUILD_NUMBER}/sai_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war"
+        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/sai_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war $WORKSPACE/sai.war"
        
       }
      }
           stage('build image') {
-        app = docker.build("shanmukha443/new43:docker${env.BUILD_NUMBER}")
+        app = docker.build("sharmag1323/myrepo:cbsv${env.BUILD_NUMBER}")
        }
    
           stage('Push image') {
@@ -26,15 +26,15 @@ try {
          * First, the incremental build number from Jenkins
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-vsv') {
+        docker.withRegistry('https://registry.hub.docker.com', 'docker-sai') {
             app.push("docker${env.BUILD_NUMBER}")
            
          }
           }
     
    stage('Deploy') {
-        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war /opt/tomcat/apache-tomcat-9.0.7/webapps/vsvyadav.war"
-        sh " sh /opt/tomcat/apache-tomcat-9.0.7/bin/startup.sh"
+        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war /opt/apache-tomcat-7.0.90/webapps/sai.war"
+        sh " sh /opt/apache-tomcat-7.0.90/bin/startup.sh"
    }
   
    delivery.artifactory()
