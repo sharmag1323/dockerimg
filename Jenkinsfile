@@ -33,7 +33,7 @@ try {
           }
     
    stage('Deploy') {
-        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/vsvyadav_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war /opt/apache-tomcat-7.0.90/webapps/sai.war"
+        sh "/bin/cp -f $WORKSPACE/Build-${env.BUILD_NUMBER}/sai_${env.BRANCH_NAME}${env.BUILD_NUMBER}.war /opt/apache-tomcat-7.0.90/webapps/sai.war"
         sh " sh /opt/apache-tomcat-7.0.90/bin/startup.sh"
    }
   
